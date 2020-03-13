@@ -2,10 +2,6 @@ import React, { useState, useEffect, Component } from 'react';
 import './App.css';
 import { Link } from 'react-router-dom'
 
-let loginForm;
-// let creds;
-// let newUser;
-
 class Login extends Component {
   state = {
     loginForm: true,
@@ -21,7 +17,6 @@ class Login extends Component {
   }
 
   flipLoginForm() {
-    console.log(this.state.loginForm);
     if (this.state.loginForm) {
       this.setState({
         loginForm: false
