@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Component } from 'react';
 import './App.css';
 import { Link } from 'react-router-dom'
+import './RETRO-bootstrap.css'
 
 class Login extends Component {
   state = {
@@ -33,9 +34,9 @@ class Login extends Component {
       return (
         <div>
           <form>
-            <input type="email" placeholder="email" />
-            <input type="password" placeholder="password" />
-            <button>Login</button>
+            <input className="mt-1" type="email" placeholder="email" />
+            <input className="mt-1" type="password" placeholder="password" />
+            <button className="btn btn-secondary mt-1">Login</button>
           </form >
           <div onClick={this.flipLoginForm.bind(this)}>
             <p>
@@ -48,10 +49,10 @@ class Login extends Component {
       return (
         <div>
           <form>
-            <input type="text" placeholder="name" />
-            <input type="email" placeholder="email" />
-            <input type="password" placeholder="password" />
-            <button>Create Account</button>
+            <input className="mt-1" type="text" placeholder="name" />
+            <input className="mt-1" type="email" placeholder="email" />
+            <input className="mt-1" type="password" placeholder="password" />
+            <button className="btn btn-secondary mt-1">Create Account</button>
           </form >
           <div onClick={this.flipLoginForm.bind(this)}>
             <p>
