@@ -40,7 +40,7 @@ class Login extends Component {
             <input type="password" placeholder="password" />
             <button>Login</button>
           </form >
-          <div>
+          <div onClick={this.flipLoginForm.bind(this)}>
             <p>
               <b>No account? Click here to Register</b>
             </p>
@@ -56,7 +56,7 @@ class Login extends Component {
             <input type="password" placeholder="password" />
             <button>Create Account</button>
           </form >
-          <div>
+          <div onClick={this.flipLoginForm.bind(this)}>
             <p>
               <b>Already have an account? Click here to Login</b>
             </p>
