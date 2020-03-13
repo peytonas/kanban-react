@@ -19,6 +19,7 @@ class Login extends Component {
       name: ""
     }
   }
+
   flipLoginForm() {
     console.log(this.state.loginForm);
     if (this.state.loginForm) {
@@ -31,8 +32,9 @@ class Login extends Component {
       })
     }
   }
+
   checkUser() {
-    if (loginForm) {
+    if (this.state.loginForm) {
       return (
         <div>
           <form>
@@ -65,9 +67,10 @@ class Login extends Component {
       )
     }
   }
+
   render() {
     return (
-      this.checkUser()
+      <div>{this.checkUser()}</div>
     )
   }
 }
