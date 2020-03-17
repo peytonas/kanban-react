@@ -8,7 +8,8 @@ const server = express()
 DbContext.connect()
 
 //Sets the port to Heroku's, and the files to the built project 
-var port = process.env.PORT || 3000
+var port = 3000
+// var port = process.env.PORT || 3000
 server.use(express.static(__dirname + '/../client/dist'))
 
 
@@ -18,7 +19,7 @@ var corsOptions = {
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
     callback(null, originIsWhitelisted);
   },
-  credentials: true, useUnifiedTopology: true
+  credentials: true
 };
 server.use(cors(corsOptions))
 
