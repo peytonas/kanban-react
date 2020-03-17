@@ -18,7 +18,7 @@ var corsOptions = {
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
     callback(null, originIsWhitelisted);
   },
-  credentials: true
+  credentials: true, useUnifiedTopology: true
 };
 server.use(cors(corsOptions))
 
