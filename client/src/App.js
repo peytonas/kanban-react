@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Nav from "./Nav";
 import { useAuth0 } from "./AuthService";
 import './App.css';
-import Login from './Login'
-import Home from './Home'
+import Profile from './Home'
+import history from "./utils/history";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
@@ -14,12 +14,14 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router
+      // @ts-ignore
+      history={history}>
       <div className="App">
         <Nav />
         <Switch>
-          <Route path="/login" exact component={Login} />
-          <Route path="/home" exact component={Home} />
+          <Route path="/" exact />
+          <Route path="/profile" exact component={Profile} />
         </Switch>
       </div>
     </Router>
