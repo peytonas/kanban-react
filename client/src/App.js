@@ -4,7 +4,7 @@ import { useAuth0 } from "./AuthService";
 import './App.css';
 import Profile from './Home'
 import history from "./utils/history";
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Router, Switch, Route } from 'react-router-dom';
 
 function App() {
   const { loading } = useAuth0();
