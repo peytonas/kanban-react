@@ -10,11 +10,13 @@ const Profile = () => {
   }
 
   return (
-    <Fragment>
-      <img src={user.picture} alt="Profile" />
-      <h2>{user.name}</h2>
-      <p>{user.email}</p>
-    </Fragment>
+    <div className="bg-light">
+      <Fragment >
+        <img className="mt-2" src={user.picture} alt="Profile" />
+        <h2>{user.name}</h2>
+        <p>{user.email}</p>
+      </Fragment>
+    </div>
   );
 };
 

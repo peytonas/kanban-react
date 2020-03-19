@@ -2,3 +2,6 @@ img {
   height: 200px;
   width: auto;
 }
+.bg-light{
+  height: 100vh;
+}

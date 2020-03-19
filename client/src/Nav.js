@@ -26,8 +26,8 @@ const NavBar = () => {
   return (
     <div className="bg-dark">
       {!isAuthenticated && <button onClick={() => loginWithRedirect({})}
-        className="btn btn-secondary">Log in</button>}
-      {isAuthenticated && <button onClick={() => logout()} className="btn btn-secondary">Log out</button>}
+        className="btn btn-primary">Log in</button>}
+      {isAuthenticated && <button onClick={() => logout()} className="btn btn-danger">Log out</button>}
       <span>
         <Link to="/" onClick={() => checkAuth()}>Home</Link>&nbsp;
         <Link to="/profile" onClick={() => checkAuth()}>Profile</Link>
