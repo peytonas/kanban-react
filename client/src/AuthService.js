@@ -1,101 +1,78 @@
-import React, { useState, useEffect, useContext } from "react";
-import createAuth0Client from "@auth0/auth0-spa-js";
+import auth0 from 'auth0-js';
 
-const DEFAULT_REDIRECT_CALLBACK = () =>
-  window.history.replaceState({}, document.title, window.location.pathname);
+class Auth {
+  constructor() {
+    this.auth0 = new auth0.WebAuth({
+      // the following three lines MUST be updated
+      domain: 'dev-gmvexraa.auth0.com',
+      audience: 'https://dev-gmvexraa.auth0.com/userinfo',
+      clientID: 'XkDzHMa2TgXqpqZZTsGk3ogLbF826JV4',
+      redirectUri: 'http://localhost:8080/callback',
+      responseType: 'id_token',
+      scope: 'openid profile'
+    });
 
-// @ts-ignore
-export const Auth0Context = React.createContext();
-export const useAuth0 = () => useContext(Auth0Context);
-export const Auth0Provider = ({
-  children,
-  onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
-  ...initOptions
-}) => {
-  const [isAuthenticated, setIsAuthenticated] = useState();
-  const [user, setUser] = useState();
-  const [auth0Client, setAuth0] = useState();
-  const [loading, setLoading] = useState(true);
-  const [popupOpen, setPopupOpen] = useState(false);
+    this.getProfile = this.getProfile.bind(this);
+    this.handleAuthentication = this.handleAuthentication.bind(this);
+    this.isAuthenticated = this.isAuthenticated.bind(this);
+    this.signIn = this.signIn.bind(this);
+    this.signOut = this.signOut.bind(this);
+  }
 
-  useEffect(() => {
-    const initAuth0 = async () => {
-      // @ts-ignore
-      const auth0FromHook = await createAuth0Client(initOptions);
-      setAuth0(auth0FromHook);
+  getProfile() {
+    return this.profile;
+  }
 
-      if (window.location.search.includes("code=") &&
-        window.location.search.includes("state=")) {
-        const { appState } = await auth0FromHook.handleRedirectCallback();
-        // @ts-ignore
-        onRedirectCallback(appState);
-      }
+  getIdToken() {
+    return this.idToken;
+  }
 
-      const isAuthenticated = await auth0FromHook.isAuthenticated();
+  isAuthenticated() {
+    return new Date().getTime() < this.expiresAt;
+  }
 
-      setIsAuthenticated(isAuthenticated);
+  signIn() {
+    this.auth0.authorize();
+  }
 
-      if (isAuthenticated) {
-        const user = await auth0FromHook.getUser();
-        setUser(user);
-      }
+  handleAuthentication() {
+    return new Promise((resolve, reject) => {
+      this.auth0.parseHash((err, authResult) => {
+        if (err) return reject(err);
+        if (!authResult || !authResult.idToken) {
+          return reject(err);
+        }
+        this.setSession(authResult);
+        resolve();
+      });
+    })
+  }
 
-      setLoading(false);
-    };
-    initAuth0();
-    // eslint-disable-next-line
-  }, []);
+  setSession(authResult) {
+    this.idToken = authResult.idToken;
+    this.profile = authResult.idTokenPayload;
+    // set the time that the id token will expire at
+    this.expiresAt = authResult.idTokenPayload.exp * 360000;
+  }
 
-  const loginWithPopup = async (params = {}) => {
-    setPopupOpen(true);
-    try {
-      // @ts-ignore
-      await auth0Client.loginWithPopup(params);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setPopupOpen(false);
-    }
-    // @ts-ignore
-    const user = await auth0Client.getUser();
-    setUser(user);
-    // @ts-ignore
-    setIsAuthenticated(true);
-  };
+  signOut() {
+    this.auth0.logout({
+      returnTo: 'http://localhost:8080',
+      clientID: 'XkDzHMa2TgXqpqZZTsGk3ogLbF826JV4',
+    });
+  }
 
-  const handleRedirectCallback = async () => {
-    setLoading(true);
-    // @ts-ignore
-    await auth0Client.handleRedirectCallback();
-    // @ts-ignore
-    const user = await auth0Client.getUser();
-    setLoading(false);
-    // @ts-ignore
-    setIsAuthenticated(true);
-    setUser(user);
-  };
-  return (
-    <Auth0Context.Provider
-      value={{
-        isAuthenticated,
-        user,
-        loading,
-        popupOpen,
-        loginWithPopup,
-        handleRedirectCallback,
-        // @ts-ignore
-        getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
-        // @ts-ignore
-        loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
-        // @ts-ignore
-        getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
-        // @ts-ignore
-        getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
-        // @ts-ignore
-        logout: (...p) => auth0Client.logout(...p)
-      }}
-    >
-      {children}
-    </Auth0Context.Provider>
-  );
-};
+  silentAuth() {
+    return new Promise((resolve, reject) => {
+      this.auth0.checkSession({}, (err, authResult) => {
+        if (err) return reject(err);
+        this.setSession(authResult);
+        resolve();
+      });
+    });
+  }
+}
+
+const auth0Client = new Auth();
+
+export default auth0Client;

@@ -1,39 +1,31 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import swal from 'sweetalert2'
-import { useAuth0 } from "./AuthService";
-import './RETRO-bootstrap.css'
+import { Link, withRouter } from 'react-router-dom';
+import auth0Client from './AuthService';
 
-const NavBar = () => {
-  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
-
-  function checkAuth() {
-    const Toast = swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: false,
-    })
-    if (!isAuthenticated) {
-      Toast.fire({
-        icon: 'error',
-        title: 'not logged in'
-      })
-    }
-  }
+function NavBar(props) {
+  const signOut = () => {
+    auth0Client.signOut();
+    props.history.replace('/');
+  };
 
   return (
-    <div className="bg-dark">
-      {!isAuthenticated && <button onClick={() => loginWithRedirect({})}
-        className="btn btn-primary">Log in</button>}
-      {isAuthenticated && <button onClick={() => logout()} className="btn btn-danger">Log out</button>}
-      <span>
-        <Link to="/" onClick={() => checkAuth()}>Home</Link>&nbsp;
-        <Link to="/profile" onClick={() => checkAuth()}>Profile</Link>
-      </span>
-    </div>
+    <nav className="navbar navbar-dark bg-primary fixed-top">
+      <Link className="navbar-brand" to="/">
+        Q&A
+      </Link>
+      {
+        !auth0Client.isAuthenticated() &&
+        <button className="btn btn-dark" onClick={auth0Client.signIn}>Sign In</button>
+      }
+      {
+        auth0Client.isAuthenticated() &&
+        <div>
+          <label className="mr-2 text-white">{auth0Client.getProfile().name}</label>
+          <button className="btn btn-dark" onClick={() => { signOut() }}>Sign Out</button>
+        </div>
+      }
+    </nav>
   );
-};
+}
 
-export default NavBar;
+export default withRouter(NavBar);

@@ -1,20 +1,14 @@
 import React, { Fragment } from "react";
-import { useAuth0 } from "./AuthService";
+import auth0Client from "./AuthService";
 import './profile.css'
 
 const Profile = () => {
-  const { loading, user } = useAuth0();
-
-  if (loading || !user) {
-    return <div></div>;
-  }
-
   return (
     <div className="bg-light">
       <Fragment >
-        <img className="mt-2" src={user.picture} alt="Profile" />
-        <h2>{user.name}</h2>
-        <p>{user.email}</p>
+        <img className="mt-2" src={auth0Client.getProfile().picture} alt="Profile" />
+        <h2>{auth0Client.getProfile().name}</h2>
+        <p>{auth0Client.getProfile().email}</p>
       </Fragment>
     </div>
   );
