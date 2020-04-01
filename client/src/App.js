@@ -28,7 +28,7 @@ class App extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="bg-dark">
         <NavBar />
         <Route exact path='/callback' component={Callback} />
         <SecuredRoute path='/profile'

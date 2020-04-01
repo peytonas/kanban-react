@@ -4,11 +4,10 @@ import './profile.css'
 
 const Profile = () => {
   return (
-    <div className="bg-light">
+    <div className="bg-dark text-success">
       <Fragment >
-        <img className="mt-2" src={auth0Client.getProfile().picture} alt="Profile" />
+        <img src={auth0Client.getProfile().picture} alt="Profile" />
         <h2>{auth0Client.getProfile().name}</h2>
-        <p>{auth0Client.getProfile().email}</p>
       </Fragment>
     </div>
   );
