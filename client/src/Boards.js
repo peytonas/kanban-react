@@ -1,16 +1,16 @@
 import React, { Fragment } from "react";
 import auth0Client from "./AuthService";
-import './profile.css'
+import './Boards.css'
 
-const Profile = () => {
+const Boards = () => {
   return (
     <div className="bg-dark text-success">
       <Fragment >
         <img src={auth0Client.getProfile().picture} alt="Profile" />
-        <h2>{auth0Client.getProfile().name}</h2>
+        <h2>{auth0Client.getProfile().nickname}</h2>
       </Fragment>
     </div>
   );
 };
 
-export default Profile;
+export default Boards;

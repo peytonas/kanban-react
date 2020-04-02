@@ -20,9 +20,10 @@ function NavBar(props) {
       }
       {
         auth0Client.isAuthenticated() &&
+        // (this.props.location.pathname == "/profile")
         <div>
-          <Link className="navbar-brand" to="/profile">
-            <label className="mr-2 text-dark mt-1">{auth0Client.getProfile().name + "'s boards"}</label>
+          <Link className="navbar-brand" to="/boards">
+            <label className="mr-2 text-dark mt-1">{auth0Client.getProfile().nickname + "'s boards"}</label>
           </Link>
           <button className="btn btn-danger" onClick={() => { signOut() }}>Sign Out</button>
         </div>

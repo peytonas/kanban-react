@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import NavBar from './Nav';
-import Profile from './Profile';
+import Boards from './Boards';
 import SecuredRoute from './SecuredRoute';
 import Callback from './Callback';
 import { Route, withRouter } from 'react-router-dom';
@@ -31,8 +31,8 @@ class App extends Component {
       <div className="bg-dark">
         <NavBar />
         <Route exact path='/callback' component={Callback} />
-        <SecuredRoute path='/profile'
-          component={Profile}
+        <SecuredRoute path='/boards'
+          component={Boards}
           checkingSession={this.state.checkingSession} />
       </div>
     );
